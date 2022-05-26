@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 set(PROJECT_NAME CarServiceInformationSystem)
 project(${PROJECT_NAME})
 set(BUILD_SHARED_LIBS OFF)
-set(CMAKE_CXX_STANDART)
+set(CMAKE_CXX_STANDART 17)
 
 if (MSVC)
 	set(CMAKE_CXX_FLAGS_INIT "-fexceptions")

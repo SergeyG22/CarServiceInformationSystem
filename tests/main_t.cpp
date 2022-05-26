@@ -4,6 +4,7 @@
 #include <winsqlite/winsqlite3.h>
 #include <stdio.h>
 
+
 TEST(HelloTest, BasicAssertions) {
   sqlite3* db;
   sqlite3_open("example.db", &db);
