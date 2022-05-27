@@ -24,7 +24,6 @@ static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
 int main() {
 
     //ÏĞÈ ÊÀÆÄÎÌ ÇÀÏÓÑÊÅ ÎÍ ÑÎÇÄÀÅÒ ÍÎÂÓŞ ÁÀÇÓ ÄÀÍÍÛÕ
-
     sqlite3* database;
     char** err = nullptr;
     int rc = sqlite3_open("../databases/users.db", &database);

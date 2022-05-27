@@ -48,8 +48,8 @@ TEST(DataBaseTest, CheckingDataBaseSimpleRepair) {
     ASSERT_EQ(0, db_simple_repair);
 }
 
-TEST(DataBaseTest, CheckingDataBaseWorkers) {
-    sqlite3* database_workers;
-    int db_workers = sqlite3_open("../databases/workers.db", &database_workers);
-    ASSERT_EQ(0, db_workers);
+TEST(DataBaseTest, CheckingDataBaseEmployees) {
+    sqlite3* database_employees;
+    int db_employees = sqlite3_open("../databases/employees.db", &database_employees);
+    ASSERT_EQ(0, db_employees);
 }

@@ -6,6 +6,6 @@ class Window: public Display {
 	sf::RenderWindow m_window {sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "CarServiceInformationSystem"};
 public:
 	sf::RenderWindow* getWindowPtr() override;
-	void render() override;
+	void render(tgui::Gui& ) override;
 	bool isOpen() const override;
 };
