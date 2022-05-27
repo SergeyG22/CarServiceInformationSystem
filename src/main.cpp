@@ -2,6 +2,7 @@
 #include <TGUI/TGUI.hpp>
 #include <winsqlite/winsqlite3.h>
 #include <stdio.h>
+#include "Facades/application.h"
 
 
 //.open ../../databases/users.db  - ïåğåõîä ê áàçå äàííûõ
@@ -20,25 +21,23 @@ static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
     return 0;
 }
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    tgui::Label::Ptr topLabel;
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+int main() {
+
+    //ÏĞÈ ÊÀÆÄÎÌ ÇÀÏÓÑÊÅ ÎÍ ÑÎÇÄÀÅÒ ÍÎÂÓŞ ÁÀÇÓ ÄÀÍÍÛÕ
 
     sqlite3* database;
     char** err = nullptr;
     int rc = sqlite3_open("../databases/users.db", &database);
-
     
     if (rc) {
-        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(database));
+       fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(database));
     }
     else {
-        fprintf(stderr, "Opened database successfully\n");
+       fprintf(stderr, "Opened database successfully\n");
     }
+    std::cout << rc;
 
+    /*
     std::string sql = "SELECT * from users";
     int result = sqlite3_exec(database, sql.c_str(), NULL, NULL, err);
     if (result != SQLITE_OK) {
@@ -46,22 +45,11 @@ int main()
     }
 
     sqlite3_exec(database, sql.c_str(), callback, NULL, NULL);
-
+    */
     sqlite3_close(database);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+    std::shared_ptr<Application>exec = std::make_unique<Application>();
+    exec->applicationExec();
 
     return 0;
 }

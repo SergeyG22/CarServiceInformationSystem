@@ -21,10 +21,28 @@ enable_testing()
 
 file(GLOB sources
         "${PROJECT_SOURCE_DIR}/src/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/View/*.cpp"
+        "${PROJECT_SOURCE_DIR}/src/View/*.c"
+		"${PROJECT_SOURCE_DIR}/include/View/*.h"
+		"${PROJECT_SOURCE_DIR}/include/*.h"
+		"${PROJECT_SOURCE_DIR}/src/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/*.c"
+		"${PROJECT_SOURCE_DIR}/src/Facades/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/Facades/*.c"
+		"${PROJECT_SOURCE_DIR}/include/Facades/*.h"
+		"${PROJECT_SOURCE_DIR}/include/Controller/*.h"
+		"${PROJECT_SOURCE_DIR}/src/Controller/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/Controller/*.c"
+		"${PROJECT_SOURCE_DIR}/include/Graphics/*.h"
+		"${PROJECT_SOURCE_DIR}/src/Graphics/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/Graphics/*.c"
 )
 
 file(GLOB tests						   
 		"${PROJECT_SOURCE_DIR}/tests/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/View/*.cpp"
+        "${PROJECT_SOURCE_DIR}/src/View/*.c"
+		"${PROJECT_SOURCE_DIR}/include/View/*.h"
 )
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
@@ -40,6 +58,7 @@ add_executable(
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(google_tests PRIVATE "${PROJECT_SOURCE_DIR}/include")
 
 find_package(SFML REQUIRED)
 
