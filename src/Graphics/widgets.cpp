@@ -86,4 +86,22 @@ Widgets::Widgets() {
 	add_button->setRenderer(m_theme.getRenderer("Button"));
 
 	output_list_view->setRenderer(m_theme.getRenderer("ListView"));
+	output_list_view->setTextSize(25);
+	/*
+	output_list_view->addColumn("Column1");
+	output_list_view->addColumn("Column2");
+	output_list_view->addColumn("Column3");
+	output_list_view->setColumnAlignment(0, tgui::ListView::ColumnAlignment::Center);
+	output_list_view->setColumnAlignment(1, tgui::ListView::ColumnAlignment::Center);
+	output_list_view->setColumnAlignment(2, tgui::ListView::ColumnAlignment::Center);
+	std::vector<tgui::String>vec = {"1111111111111","HELOOOOO","3"};
+	std::vector<tgui::String>vec2 = { "1","2","3" };
+	output_list_view->addItem(vec);
+	output_list_view->addItem(vec2);
+	std::cout << output_list_view->getItemCount();
+	
+	output_list_view->setAutoScroll(true);
+	*/
 }
+
+

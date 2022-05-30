@@ -8,7 +8,7 @@
 
 TEST(DataBaseTest, CheckingDataBaseApplication) {
     sqlite3* database_application;
-    int db_application_is_open = sqlite3_open("../databases/application.db", &database_application);
+    int db_application_is_open = sqlite3_open("../databases/applications.db", &database_application);
     ASSERT_EQ(0, db_application_is_open);
 }
 
@@ -18,15 +18,9 @@ TEST(DataBaseTest, CheckingDataBaseComplexRepair) {
     ASSERT_EQ(0, db_complex_repair_is_open);
 }
 
-TEST(DataBaseTest, CheckingDataBaseCompositionOfRepair) {
-    sqlite3* database_composition_of_repair;
-    int db_composition_of_repair = sqlite3_open("../databases/composition_of_repair.db", &database_composition_of_repair);
-    ASSERT_EQ(0, db_composition_of_repair);
-}
-
 TEST(DataBaseTest, CheckingDataBaseCounterParties) {
     sqlite3* database_counter_parties;
-    int db_counter_parties = sqlite3_open("../databases/counter_parties.db", &database_counter_parties);
+    int db_counter_parties = sqlite3_open("../databases/counterparties.db", &database_counter_parties);
     ASSERT_EQ(0, db_counter_parties);
 }
 
@@ -38,7 +32,7 @@ TEST(DataBaseTest, CheckingDataBaseDepartment) {
 
 TEST(DataBaseTest, CheckindDataBaseNodeRepair) {
     sqlite3* database_node_repair;
-    int db_node_repair = sqlite3_open("../databases/node_repair.db", &database_node_repair);
+    int db_node_repair = sqlite3_open("../databases/repair_of_nodes.db", &database_node_repair);
     ASSERT_EQ(0, db_node_repair);
 }
 
@@ -53,3 +47,5 @@ TEST(DataBaseTest, CheckingDataBaseEmployees) {
     int db_employees = sqlite3_open("../databases/employees.db", &database_employees);
     ASSERT_EQ(0, db_employees);
 }
+
+//проверка того, что таблица уже имеется

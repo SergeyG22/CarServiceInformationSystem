@@ -2,9 +2,13 @@
 
 const unsigned int WINDOW_WIDTH = 990;
 const unsigned int WINDOW_HEIGHT = 770;
+
+const int STRING_MULTIPLIER = 16;
 const int TEXT_SIZE = 18;
+
 const int BUTTON_WIDTH = 250;
 const int BUTTON_HEIGHT = 60; 
+
 const int INTERVAL_BETWEEN_BUTTONS = 70;
 const int START_POS_X_VIEW_BUTTONS = 50;
 const int START_POS_Y_VIEW_BUTTONS = 30;

@@ -36,6 +36,9 @@ file(GLOB sources
 		"${PROJECT_SOURCE_DIR}/include/Graphics/*.h"
 		"${PROJECT_SOURCE_DIR}/src/Graphics/*.cpp"
 		"${PROJECT_SOURCE_DIR}/src/Graphics/*.c"
+		"${PROJECT_SOURCE_DIR}/include/DataBase/*.h"
+		"${PROJECT_SOURCE_DIR}/src/DataBase/*.cpp"
+		"${PROJECT_SOURCE_DIR}/src/DataBase/*.c"
 )
 
 file(GLOB tests						   

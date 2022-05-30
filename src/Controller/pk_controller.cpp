@@ -1,7 +1,46 @@
 #include "Controller/pk_controller.h"
 
-PkController::PkController(std::shared_ptr<Display>&window_ptr):m_window_ptr(window_ptr) {
+PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui& gui, Widgets& widgets, std::shared_ptr<Display>& window_ptr): m_db_data(data_base), m_window_ptr(window_ptr), m_widgets(widgets), m_gui(gui) {
 
+	m_widgets.departments_view_button->onPress([&] {
+		data_base->dataBaseRequest("department", "department");
+		});
+	m_widgets.counterparties_view_button->onPress([&] {
+		data_base->dataBaseRequest("counterparties", "counterparties");
+		});
+	m_widgets.employees_view_button->onPress([&] {
+		data_base->dataBaseRequest("employees", "employees");
+		});
+	m_widgets.applications_view_button->onPress([&] {
+		data_base->dataBaseRequest("applications", "applications");
+		});
+	m_widgets.repair_of_nodes_view_button->onPress([&] {
+		data_base->dataBaseRequest("repair_of_nodes", "repair_of_nodes");
+		});
+	m_widgets.simple_repair_view_button->onPress([&] {
+		data_base->dataBaseRequest("simple_repair", "simple_repair");
+		});
+	m_widgets.complex_repairs_view_button->onPress([&] {
+		data_base->dataBaseRequest("complex_repair", "complex_repair");
+		});
+	m_widgets.earnings_of_employees_view_button->onPress([&] {
+		data_base->dataBaseRequest("salary","salary");
+		});
+	m_widgets.add_button->onPress([&] {
+		std::cout << "ƒÓ·‡‚ËÚ¸\n";
+		});
+	m_widgets.remove_button->onPress([&] {
+		std::cout << "”‰‡ÎËÚ¸\n";
+		});
+	m_widgets.edit_button->onPress([&] {
+		std::cout << "»ÁÏÂÌËÚ¸\n";
+		});
+	m_widgets.accept_button->onPress([&] {
+		std::cout << "œËÏÂÌËÚ¸\n";
+		});
+	m_widgets.exit_button->onPress([&] {
+		std::cout << "¬˚ÈÚË\n";
+		});
 }
 
 void PkController::eventLoop() {
@@ -15,6 +54,7 @@ void PkController::eventLoop() {
 		if (event.type == sf::Event::Closed) {
 			m_window_ptr->getWindowPtr()->close();
 		}
+		m_gui.handleEvent(event);				//  Œ√ƒ¿ «¿  ŒÃ≈Õ“»–”≈Ã –¿¡Œ“¿≈“ Ã¿—ÿ“¿¡»–Œ¬¿Õ»≈, ÕŒ Õ≈ –¿¡Œ“¿ﬁ“  ÕŒœ »!!!!
 		mouseEvent(event, view_mouse_position);
 		keyboardEvent(event);
 	}
@@ -24,16 +64,9 @@ void PkController::eventLoop() {
 bool PkController::mouseEvent(const sf::Event& event, const sf::Vector2f& view_mouse_position) {
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (event.key.code == sf::Mouse::Left) {
-			std::cout << "Mouse clicked\n";
+
 		}
 	}
-
-	if (event.type == sf::Event::Resized) {
-		std::cout << "resize\n";
-		std::cout << m_window_ptr->getWindowPtr()->getSize().x << '\n';
-		std::cout << m_window_ptr->getWindowPtr()->getSize().y << '\n';
-	}
-
 
 	return false;
 }
@@ -44,7 +77,7 @@ bool PkController::keyboardEvent(const sf::Event& event) {
 		switch (event.key.code) {
 
 		case sf::Keyboard::Key::Space: {
-			std::cout << "Keyboard space\n";
+
 			break;
 		}
 

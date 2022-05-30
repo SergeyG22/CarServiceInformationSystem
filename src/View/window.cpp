@@ -15,3 +15,5 @@ void Window::render(tgui::Gui& gui) {
 bool Window::isOpen() const {
 	return m_window.isOpen();
 }
+
+//опционально (прверить в гугл тестах, что таблицы были успешно созданы)
