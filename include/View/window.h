@@ -3,9 +3,12 @@
 #include "config.h"
 
 class Window: public Display {
-	sf::RenderWindow m_window {sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "CarServiceInformationSystem"};
+	unsigned int m_width;
+	unsigned int m_height;
+	sf::RenderWindow m_window {sf::VideoMode(m_width, m_height), L"Информационная система интерактивного приема автомобилей на СТО"};
 public:
 	sf::RenderWindow* getWindowPtr() override;
 	void render(tgui::Gui& ) override;
-	bool isOpen() const override;
+	bool getWindowState() const override;
+	Window(const unsigned int, const unsigned int);
 };

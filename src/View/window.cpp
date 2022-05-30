@@ -12,8 +12,16 @@ void Window::render(tgui::Gui& gui) {
 	m_window.display();
 }
 
-bool Window::isOpen() const {
+bool Window::getWindowState() const {
 	return m_window.isOpen();
 }
 
-//опционально (прверить в гугл тестах, что таблицы были успешно созданы)
+
+Window::Window(const unsigned int width, const unsigned int height): m_width(width), m_height(height) {
+
+}
+
+
+// getWindowState
+//setWindowState(Open Close)
+//установить окну статус открыто оно или нет 

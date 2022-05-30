@@ -46,6 +46,13 @@ Widgets::Widgets() {
 	accept_button->setPosition(POS_X_ACCEPT_BUTTON, POS_Y_ACCEPT_BUTTON);
 	accept_button->setSize(BUTTON_WIDTH_BOTTOM_PANEL, BUTTON_HEIGHT_BOTTOM_PANEL);
 	accept_button->setTextSize(TEXT_SIZE);
+
+	cancel_button = tgui::Button::create();
+	cancel_button->setText(L"Отменить");
+	cancel_button->setPosition(POS_X_CANCEL_BUTTON, POS_Y_CANCEL_BUTTON);
+	cancel_button->setSize(BUTTON_WIDTH_BOTTOM_PANEL, BUTTON_HEIGHT_BOTTOM_PANEL);
+	cancel_button->setTextSize(TEXT_SIZE);
+
 	edit_button = tgui::Button::create();
 	edit_button->setText(L"Изменить");
 	edit_button->setPosition(POS_X_EDIT_BUTTON, POS_Y_EDIT_BUTTON);
@@ -80,6 +87,7 @@ Widgets::Widgets() {
 	earnings_of_employees_view_button->setRenderer(m_theme.getRenderer("Button"));
 
 	accept_button->setRenderer(m_theme.getRenderer("Button"));
+	cancel_button->setRenderer(m_theme.getRenderer("Button"));
 	edit_button->setRenderer(m_theme.getRenderer("Button"));
 	exit_button->setRenderer(m_theme.getRenderer("Button"));
 	remove_button->setRenderer(m_theme.getRenderer("Button"));
@@ -87,21 +95,6 @@ Widgets::Widgets() {
 
 	output_list_view->setRenderer(m_theme.getRenderer("ListView"));
 	output_list_view->setTextSize(25);
-	/*
-	output_list_view->addColumn("Column1");
-	output_list_view->addColumn("Column2");
-	output_list_view->addColumn("Column3");
-	output_list_view->setColumnAlignment(0, tgui::ListView::ColumnAlignment::Center);
-	output_list_view->setColumnAlignment(1, tgui::ListView::ColumnAlignment::Center);
-	output_list_view->setColumnAlignment(2, tgui::ListView::ColumnAlignment::Center);
-	std::vector<tgui::String>vec = {"1111111111111","HELOOOOO","3"};
-	std::vector<tgui::String>vec2 = { "1","2","3" };
-	output_list_view->addItem(vec);
-	output_list_view->addItem(vec2);
-	std::cout << output_list_view->getItemCount();
-	
-	output_list_view->setAutoScroll(true);
-	*/
 }
 
 
