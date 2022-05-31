@@ -70,3 +70,6 @@ const int POS_X_ADD_BUTTON = 330;
 const int POS_Y_ADD_BUTTON = 600;
 const int POS_X_REMOVE_BUTTON = 540;
 const int POS_Y_REMOVE_BUTTON = 600;
+
+const int SIZE_FROM_EDITBOX = 25;
+const int OFFSET_WINDOW_HEIGHT = 100;

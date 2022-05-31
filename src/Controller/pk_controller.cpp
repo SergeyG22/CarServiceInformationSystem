@@ -3,28 +3,36 @@
 PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui& gui, tgui::Gui& dialog_gui, Widgets& widgets, std::shared_ptr<Display>& window_ptr , std::shared_ptr<Display>& dialog_ptr) : m_db_data(data_base), m_window_ptr(window_ptr), m_widgets(widgets), m_gui(gui) , m_dialog_gui(dialog_gui), m_dialog_ptr(dialog_ptr) {
 
 	m_widgets.departments_view_button->onPress([&] {
-		data_base->dataBaseRequest("department", "department");
+		std::string request = "SELECT * FROM department";
+		data_base->dataBaseRequest("department", "department", request );
 		});
 	m_widgets.counterparties_view_button->onPress([&] {
-		data_base->dataBaseRequest("counterparties", "counterparties");
+		std::string request = "SELECT * FROM counterparties";
+		data_base->dataBaseRequest("counterparties", "counterparties", request);
 		});
 	m_widgets.employees_view_button->onPress([&] {
-		data_base->dataBaseRequest("employees", "employees");
+		std::string request = "SELECT * FROM employees";
+		data_base->dataBaseRequest("employees", "employees", request);
 		});
 	m_widgets.applications_view_button->onPress([&] {
-		data_base->dataBaseRequest("applications", "applications");
+		std::string request = "SELECT * FROM applications";
+		data_base->dataBaseRequest("applications", "applications", request);
 		});
 	m_widgets.repair_of_nodes_view_button->onPress([&] {
-		data_base->dataBaseRequest("repair_of_nodes", "repair_of_nodes");
+		std::string request = "SELECT * FROM repair_of_nodes";
+		data_base->dataBaseRequest("repair_of_nodes", "repair_of_nodes", request);
 		});
 	m_widgets.simple_repair_view_button->onPress([&] {
-		data_base->dataBaseRequest("simple_repair", "simple_repair");
+		std::string request = "SELECT * FROM simple_repair";
+		data_base->dataBaseRequest("simple_repair", "simple_repair", request);
 		});
 	m_widgets.complex_repairs_view_button->onPress([&] {
-		data_base->dataBaseRequest("complex_repair", "complex_repair");
+		std::string request = "SELECT * FROM complex_repair";
+		data_base->dataBaseRequest("complex_repair", "complex_repair", request);
 		});
 	m_widgets.earnings_of_employees_view_button->onPress([&] {
-		data_base->dataBaseRequest("salary","salary");
+		std::string request = "SELECT * FROM salary";
+		data_base->dataBaseRequest("salary","salary", request);
 		});
 	m_widgets.add_button->onPress([&] {
 		if (widgets.output_list_view->getColumnCount() != 0 && widgets.output_list_view->getItemCount() != 0) {
@@ -48,16 +56,17 @@ PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui
 				m_dialog_gui.add(edit);
 				currentPositionEditBox += INTERVAL_BETWEEN_EDIT_BOX;
 			}
-			m_widgets.accept_button->setPosition(POS_X_ACCEPT_BUTTON, currentPositionEditBox + 25);
-			m_widgets.cancel_button->setPosition(POS_X_CANCEL_BUTTON, currentPositionEditBox + 25);
-			m_dialog_ptr->getWindowPtr()->setSize(sf::Vector2u(WINDOW_DIALOG_WIDTH, currentPositionEditBox + 100));
+			m_widgets.accept_button->setPosition(POS_X_ACCEPT_BUTTON, currentPositionEditBox + SIZE_FROM_EDITBOX); 
+			m_widgets.cancel_button->setPosition(POS_X_CANCEL_BUTTON, currentPositionEditBox + SIZE_FROM_EDITBOX);
+			m_dialog_ptr->getWindowPtr()->setSize(sf::Vector2u(WINDOW_DIALOG_WIDTH, currentPositionEditBox + OFFSET_WINDOW_HEIGHT));
 
 			m_dialog_gui.add(m_widgets.accept_button);
 		    m_dialog_gui.add(m_widgets.cancel_button);
-
+		
 		}
 		
 		});
+
 	m_widgets.cancel_button->onPress([&] {
 		m_dialog_ptr->getWindowPtr()->close();
 		});
@@ -69,7 +78,36 @@ PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui
 		std::cout << "Èçìåíèòü\n";
 		});
 	m_widgets.accept_button->onPress([&] {
-		std::cout << "Ïðèìåíèòü\n";
+
+		std::string request = "INSERT INTO " + m_db_data->getTableName() + "(";
+
+		for (int i = 0; i < m_widgets.output_list_view->getColumnCount(); ++i) {
+			
+			request += m_widgets.output_list_view->getColumnText(i).toStdString();
+			if (i != m_widgets.output_list_view->getColumnCount() - 1) {
+				request += ",";
+			}
+		}
+		request += ") VALUES (";
+
+		for (int i = 0; i < m_dialog_gui.getWidgets().size(); ++i) {
+			if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
+				auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
+				request += "'" + ptr->getText().toStdString() + "'";
+				if (i != m_dialog_gui.getWidgets().size()) {
+					request += ",";
+				}
+			}
+		}
+		request.pop_back();
+		request += ")";
+		data_base->dataBaseRequest(m_db_data->getDataBaseName(), m_db_data->getTableName(), request);
+		std::string redraw_output_window = "SELECT * FROM "+ m_db_data->getTableName();
+		data_base->dataBaseRequest(m_db_data->getDataBaseName(), m_db_data->getTableName(), redraw_output_window);
+		m_dialog_ptr->getWindowPtr()->close();
+
+		//ÑÄÅËÀÒÜ ÊÍÎÏÊÓ ÍÅ ÀÊÒÈÂÍÎÉ ÅÑËÈ ÂÂÎÄÈÌÛÅ ÏÎËß ÏÓÑÒÛÅ
+
 		});
 	m_widgets.exit_button->onPress([&] {
 		std::cout << "Âûéòè\n";
