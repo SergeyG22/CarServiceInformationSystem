@@ -15,6 +15,7 @@ public:
 	tgui::Button::Ptr earnings_of_employees_view_button;
 	tgui::Button::Ptr accept_button;
 	tgui::Button::Ptr cancel_button;
+	tgui::Button::Ptr change_button;
 	tgui::Button::Ptr edit_button;
 	tgui::Button::Ptr exit_button;
 	tgui::Button::Ptr add_button;

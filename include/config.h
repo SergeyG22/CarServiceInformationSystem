@@ -52,6 +52,8 @@ const int POS_Y_ACCEPT_BUTTON = 0;
 const int POS_X_CANCEL_BUTTON = 230;
 const int POS_Y_CANCEL_BUTTON = 0;
 
+const int POS_X_CHANGE_BUTTON = 25;
+const int POS_Y_CHANGE_BUTTON = 0;
 //EDIT BOX 
 
 const int POS_X_EDIT_BOX = 50;
@@ -73,3 +75,6 @@ const int POS_Y_REMOVE_BUTTON = 600;
 
 const int SIZE_FROM_EDITBOX = 25;
 const int OFFSET_WINDOW_HEIGHT = 100;
+
+const int FPS = 60.0;
+const float VALUE_OF_SCREEN_RATE = 520.f;

@@ -14,8 +14,9 @@ Application::Application() {
 	m_gui.add(m_widgets.output_list_view);
 	m_gui.add(m_widgets.add_button);
 	m_gui.add(m_widgets.remove_button); 
-	m_database = std::make_unique<SQLiteDataBase>(m_widgets);
+	m_database = std::make_unique<SQLiteDataBase>(m_widgets, m_dialog_gui, m_dialog_ptr);
 	m_controller_ptr = std::make_unique<PkController>(m_database, m_gui, m_dialog_gui, m_widgets, m_display_ptr, m_dialog_ptr);
+	m_gui.setAbsoluteView({ 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT });
 }
 
 void Application::applicationExec() {

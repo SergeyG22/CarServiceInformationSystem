@@ -5,6 +5,7 @@
 class Window: public Display {
 	unsigned int m_width;
 	unsigned int m_height;
+	sf::Clock clock;
 	sf::RenderWindow m_window {sf::VideoMode(m_width, m_height), L"Информационная система интерактивного приема автомобилей на СТО"};
 public:
 	sf::RenderWindow* getWindowPtr() override;

@@ -43,6 +43,7 @@ Widgets::Widgets() {
 	earnings_of_employees_view_button->setTextSize(TEXT_SIZE);
 	accept_button = tgui::Button::create();
 	accept_button->setText(L"Применить");
+	accept_button->setEnabled(false);
 	accept_button->setPosition(POS_X_ACCEPT_BUTTON, POS_Y_ACCEPT_BUTTON);
 	accept_button->setSize(BUTTON_WIDTH_BOTTOM_PANEL, BUTTON_HEIGHT_BOTTOM_PANEL);
 	accept_button->setTextSize(TEXT_SIZE);
@@ -52,6 +53,12 @@ Widgets::Widgets() {
 	cancel_button->setPosition(POS_X_CANCEL_BUTTON, POS_Y_CANCEL_BUTTON);
 	cancel_button->setSize(BUTTON_WIDTH_BOTTOM_PANEL, BUTTON_HEIGHT_BOTTOM_PANEL);
 	cancel_button->setTextSize(TEXT_SIZE);
+
+	change_button = tgui::Button::create();
+	change_button->setText(L"Изменить");
+	change_button->setPosition(POS_X_CHANGE_BUTTON, POS_Y_CHANGE_BUTTON);
+	change_button->setSize(BUTTON_WIDTH_BOTTOM_PANEL, BUTTON_HEIGHT_BOTTOM_PANEL);
+	change_button->setTextSize(TEXT_SIZE);
 
 	edit_button = tgui::Button::create();
 	edit_button->setText(L"Изменить");
@@ -88,6 +95,7 @@ Widgets::Widgets() {
 
 	accept_button->setRenderer(m_theme.getRenderer("Button"));
 	cancel_button->setRenderer(m_theme.getRenderer("Button"));
+	change_button->setRenderer(m_theme.getRenderer("Button"));
 	edit_button->setRenderer(m_theme.getRenderer("Button"));
 	exit_button->setRenderer(m_theme.getRenderer("Button"));
 	remove_button->setRenderer(m_theme.getRenderer("Button"));

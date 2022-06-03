@@ -32,19 +32,22 @@ PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui
 		});
 	m_widgets.earnings_of_employees_view_button->onPress([&] {
 		std::string request = "SELECT * FROM salary";
-		data_base->dataBaseRequest("salary","salary", request);
+		data_base->dataBaseRequest("salary","salary", request); 
+
 		});
 	m_widgets.add_button->onPress([&] {
-		if (widgets.output_list_view->getColumnCount() != 0 && widgets.output_list_view->getItemCount() != 0) {
+		if (widgets.output_list_view->getColumnCount() != 0 /* && widgets.output_list_view->getItemCount() != 0*/) {
 			m_dialog_ptr = std::make_unique<Window>(WINDOW_DIALOG_WIDTH, WINDOW_DIALOG_HEIGHT);
 			m_dialog_ptr->getWindowPtr()->setTitle(L"ƒÓ·‡‚ËÚ¸ ÌÓ‚Û˛ Á‡ÔËÒ¸");
 			m_dialog_gui.setTarget(*(m_dialog_ptr->getWindowPtr()));
+//			m_dialog_gui.setAbsoluteView({ 0, 0, WINDOW_DIALOG_WIDTH, WINDOW_DIALOG_HEIGHT }); 
 			m_dialog_gui.removeAllWidgets();
 	
 			tgui::Theme m_theme{ "../themes/Black.txt" };
 
 			tgui::EditBox::Ptr edit;
 			int currentPositionEditBox = POS_Y_EDIT_BOX;
+
 			for (int i = 0; i < widgets.output_list_view->getColumnCount(); ++i) {
 				std::string str = widgets.output_list_view->getColumnText(i).toStdString();
 				edit = tgui::EditBox::create();
@@ -56,13 +59,36 @@ PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui
 				m_dialog_gui.add(edit);
 				currentPositionEditBox += INTERVAL_BETWEEN_EDIT_BOX;
 			}
+
+			for (int i = 0; i < m_dialog_gui.getWidgets().size(); ++i) {
+				if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
+					auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
+					ptr->onTextChange([&] { 						
+						for (int i = 0; i < m_dialog_gui.getWidgets().size(); ++i) {
+							if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
+								auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
+								if (!ptr->getText().size()) {
+									m_widgets.accept_button->setEnabled(false);
+									break;
+								}
+								else {
+									m_widgets.accept_button->setEnabled(true);
+								}
+
+							}
+						}
+						
+						});
+				}
+			}
+			
 			m_widgets.accept_button->setPosition(POS_X_ACCEPT_BUTTON, currentPositionEditBox + SIZE_FROM_EDITBOX); 
 			m_widgets.cancel_button->setPosition(POS_X_CANCEL_BUTTON, currentPositionEditBox + SIZE_FROM_EDITBOX);
 			m_dialog_ptr->getWindowPtr()->setSize(sf::Vector2u(WINDOW_DIALOG_WIDTH, currentPositionEditBox + OFFSET_WINDOW_HEIGHT));
 
 			m_dialog_gui.add(m_widgets.accept_button);
-		    m_dialog_gui.add(m_widgets.cancel_button);
-		
+		    m_dialog_gui.add(m_widgets.cancel_button);	
+			m_dialog_gui.setAbsoluteView({ 0, 0, WINDOW_DIALOG_WIDTH, (float)currentPositionEditBox + OFFSET_WINDOW_HEIGHT });
 		}
 		
 		});
@@ -72,51 +98,101 @@ PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui
 		});
 
 	m_widgets.remove_button->onPress([&] {
-		std::cout << "”‰‡ÎËÚ¸\n";
+		m_db_data->deleteFromDataBase();
 		});
+
+
 	m_widgets.edit_button->onPress([&] {
-		std::cout << "»ÁÏÂÌËÚ¸\n";
-		});
-	m_widgets.accept_button->onPress([&] {
+		std::set<std::size_t>selected_item = widgets.output_list_view->getSelectedItemIndices();
+		
+		if (selected_item.size()) {
 
-		std::string request = "INSERT INTO " + m_db_data->getTableName() + "(";
+			if (widgets.output_list_view->getColumnCount() != 0 && widgets.output_list_view->getItemCount() != 0) {
+				m_dialog_ptr = std::make_unique<Window>(WINDOW_DIALOG_WIDTH, WINDOW_DIALOG_HEIGHT);
+				m_dialog_ptr->getWindowPtr()->setTitle(L"»ÁÏÂÌËÚ¸ ÒÛ˘ÂÒÚ‚Û˛˘Û˛ Á‡ÔËÒ¸");
+				m_dialog_gui.setTarget(*(m_dialog_ptr->getWindowPtr()));
+				m_dialog_gui.removeAllWidgets();
 
-		for (int i = 0; i < m_widgets.output_list_view->getColumnCount(); ++i) {
-			
-			request += m_widgets.output_list_view->getColumnText(i).toStdString();
-			if (i != m_widgets.output_list_view->getColumnCount() - 1) {
-				request += ",";
-			}
-		}
-		request += ") VALUES (";
+				tgui::Theme m_theme{ "../themes/Black.txt" };
 
-		for (int i = 0; i < m_dialog_gui.getWidgets().size(); ++i) {
-			if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
-				auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
-				request += "'" + ptr->getText().toStdString() + "'";
-				if (i != m_dialog_gui.getWidgets().size()) {
-					request += ",";
+				tgui::EditBox::Ptr edit;
+				int currentPositionEditBox = POS_Y_EDIT_BOX;
+				for (int i = 0; i < widgets.output_list_view->getColumnCount(); ++i) {
+					std::string str = widgets.output_list_view->getColumnText(i).toStdString();
+					edit = tgui::EditBox::create();
+					edit->setTextSize(TEXT_SIZE);
+					edit->setSize(WIDTH_EDIT_BOX, HEIGHT_EDIT_BOX);
+					edit->setRenderer(m_theme.getRenderer("EditBox"));
+					edit->setPosition(POS_X_EDIT_BOX, currentPositionEditBox);
+					edit->setDefaultText(str);
+					m_dialog_gui.add(edit);
+					currentPositionEditBox += INTERVAL_BETWEEN_EDIT_BOX;
 				}
-			}
-		}
-		request.pop_back();
-		request += ")";
-		data_base->dataBaseRequest(m_db_data->getDataBaseName(), m_db_data->getTableName(), request);
-		std::string redraw_output_window = "SELECT * FROM "+ m_db_data->getTableName();
-		data_base->dataBaseRequest(m_db_data->getDataBaseName(), m_db_data->getTableName(), redraw_output_window);
-		m_dialog_ptr->getWindowPtr()->close();
 
-		//—ƒ≈À¿“‹  ÕŒœ ” Õ≈ ¿ “»¬ÕŒ… ≈—À» ¬¬Œƒ»Ã€≈ œŒÀﬂ œ”—“€≈
+				for (std::set<std::size_t>::iterator it = selected_item.begin(); it != selected_item.end(); ++it) {
+					for (int i = 0; i < widgets.output_list_view->getItemRow((*it)).size(); ++i) {
+						std::string row = widgets.output_list_view->getItemRow((*it))[i].toStdString();
+							if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
+								auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
+								ptr->setText(row);
+							}
+					}
+				}
+
+				for (int i = 0; i < m_dialog_gui.getWidgets().size(); ++i) {
+					if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
+						auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
+						ptr->onTextChange([&] {
+							for (int i = 0; i < m_dialog_gui.getWidgets().size(); ++i) {
+								if (m_dialog_gui.getWidgets()[i]->getWidgetType() == "EditBox") {
+									auto ptr = dynamic_cast<tgui::EditBox*>(m_dialog_gui.getWidgets()[i].get());
+									if (!ptr->getText().size()) {
+										m_widgets.change_button->setEnabled(false);
+										break;
+									}
+									else {
+										m_widgets.change_button->setEnabled(true);
+									}
+
+								}
+							}
+
+							});
+					}
+				}
+
+				m_widgets.change_button->setPosition(POS_X_CHANGE_BUTTON, currentPositionEditBox + SIZE_FROM_EDITBOX);
+				m_widgets.cancel_button->setPosition(POS_X_CANCEL_BUTTON, currentPositionEditBox + SIZE_FROM_EDITBOX);
+				
+				m_dialog_ptr->getWindowPtr()->setSize(sf::Vector2u(WINDOW_DIALOG_WIDTH, currentPositionEditBox + OFFSET_WINDOW_HEIGHT));
+
+				m_dialog_gui.add(m_widgets.change_button);
+				m_dialog_gui.add(m_widgets.cancel_button);
+				m_dialog_gui.setAbsoluteView({ 0, 0, WINDOW_DIALOG_WIDTH, (float)currentPositionEditBox + OFFSET_WINDOW_HEIGHT });
+			}
+
+		}
 
 		});
+
+	m_widgets.change_button->onPress([&] {
+		m_db_data->deleteFromDataBase();
+		m_db_data->insertIntoToDataBase();
+		});
+
+
+	m_widgets.accept_button->onPress([&] {
+		m_db_data->insertIntoToDataBase();
+		});
+
 	m_widgets.exit_button->onPress([&] {
-		std::cout << "¬˚ÈÚË\n";
+		m_window_ptr->getWindowPtr()->close();
+
 		});
 }
 
 void PkController::eventLoop() {
 	sf::Event event;
-
 	sf::Vector2i global_mouse_position = sf::Mouse::getPosition(*(m_window_ptr->getWindowPtr()));
 	sf::Vector2f view_mouse_position = m_window_ptr->getWindowPtr()->mapPixelToCoords(global_mouse_position);
 
@@ -125,7 +201,8 @@ void PkController::eventLoop() {
 		if (event.type == sf::Event::Closed) {
 			m_window_ptr->getWindowPtr()->close();
 		}
-		m_gui.handleEvent(event);				//  Œ√ƒ¿ «¿  ŒÃ≈Õ“»–”≈Ã –¿¡Œ“¿≈“ Ã¿—ÿ“¿¡»–Œ¬¿Õ»≈, ÕŒ Õ≈ –¿¡Œ“¿ﬁ“  ÕŒœ »!!!!
+
+		m_gui.handleEvent(event);
 		mouseEvent(event, view_mouse_position);
 		keyboardEvent(event);
 	}
