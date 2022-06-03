@@ -7,7 +7,7 @@ class RenderingElement{
 	std::string m_file_name;
 	sf::Texture m_texture;
 public:
-	RenderingElement(std::string);
+	RenderingElement(const std::string&, const float&, const float&);
 	sf::Sprite sprite;
 	std::string getFileName() const;
 };

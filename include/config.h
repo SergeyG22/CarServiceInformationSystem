@@ -78,3 +78,6 @@ const int OFFSET_WINDOW_HEIGHT = 100;
 
 const int FPS = 60.0;
 const float VALUE_OF_SCREEN_RATE = 520.f;
+
+const float POS_X_MAIN_LOGO = 15;
+const float POS_Y_MAIN_LOGO = 600;

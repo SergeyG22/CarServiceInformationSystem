@@ -1,16 +1,19 @@
 #include "Graphics/widgets.h"
 
 Widgets::Widgets() {
+	
 	departments_view_button = tgui::Button::create();
 	departments_view_button->setText(L"Департамент");
 	departments_view_button->setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 	departments_view_button->setPosition(POS_X_DEPARTMENTS_VIEW_BUTTON, POS_Y_DEPARTMENTS_VIEW_BUTTON);
 	departments_view_button->setTextSize(TEXT_SIZE);
+	
 	counterparties_view_button = tgui::Button::create();
 	counterparties_view_button->setText(L"Контрагенты");
 	counterparties_view_button->setPosition(POS_X_COUNTERPARTIES_VIEW_BUTTON, POS_Y_COUNTERPARTIES_VIEW_BUTTON);
 	counterparties_view_button->setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 	counterparties_view_button->setTextSize(TEXT_SIZE);
+	
 	employees_view_button = tgui::Button::create();
 	employees_view_button->setText(L"Сотрудники");
 	employees_view_button->setPosition(POS_X_EMPLOYEES_VIEW_BUTTON, POS_Y_EMPLOYEES_VIEW_BUTTON);

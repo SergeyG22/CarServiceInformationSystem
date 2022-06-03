@@ -10,12 +10,12 @@
 class PkController: public Controller{
 	std::shared_ptr<Display>& m_window_ptr;
 	std::shared_ptr<Display>& m_dialog_ptr;
-	Widgets& m_widgets;
+	std::shared_ptr<Widgets>& m_widgets;
 	tgui::Gui& m_gui;
 	tgui::Gui& m_dialog_gui;
 	std::shared_ptr<SQLiteDataBase>& m_db_data;
 public:
-	PkController(std::shared_ptr<SQLiteDataBase>&, tgui::Gui&, tgui::Gui&, Widgets&, std::shared_ptr<Display>& , std::shared_ptr<Display>& );
+	PkController(std::shared_ptr<SQLiteDataBase>&, tgui::Gui&, tgui::Gui&, std::shared_ptr<Widgets>&, std::shared_ptr<Display>&, std::shared_ptr<Display>&);
 	bool mouseEvent(const sf::Event&, const sf::Vector2f&);
 	bool keyboardEvent(const sf::Event&);
 	void eventLoop() override;

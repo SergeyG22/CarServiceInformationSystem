@@ -1,6 +1,6 @@
 #include "DataBase/sqlite_db.h"
 
-SQLiteDataBase::SQLiteDataBase(Widgets& widgets, tgui::Gui& dialog_gui, std::shared_ptr<Display>& dialog_ptr): m_widgets(widgets),m_dialog_gui(dialog_gui), m_dialog_ptr(dialog_ptr) {
+SQLiteDataBase::SQLiteDataBase( std::shared_ptr<Widgets>& widgets, tgui::Gui& dialog_gui, std::shared_ptr<Display>& dialog_ptr) : m_widgets(widgets), m_dialog_gui(dialog_gui), m_dialog_ptr(dialog_ptr) {
 
 }
 
@@ -40,13 +40,13 @@ std::string SQLiteDataBase::getTableName() const {
 }
 
 void SQLiteDataBase::alignToWidth() {
-	int current_number_of_columns = m_widgets.output_list_view->getColumnCount();  
+	int current_number_of_columns = m_widgets->output_list_view->getColumnCount();  
 	int maximum_column_string_lenght = 0;										 
 
 	for (int i = 0; i < current_number_of_columns; ++i) {                        
-		m_widgets.output_list_view->getColumnText(i).size();                    
-		if (maximum_column_string_lenght < m_widgets.output_list_view->getColumnText(i).size()) {
-			maximum_column_string_lenght = m_widgets.output_list_view->getColumnText(i).size();
+		m_widgets->output_list_view->getColumnText(i).size();                    
+		if (maximum_column_string_lenght < m_widgets->output_list_view->getColumnText(i).size()) {
+			maximum_column_string_lenght = m_widgets->output_list_view->getColumnText(i).size();
 		}
 	}
 		
@@ -55,7 +55,7 @@ void SQLiteDataBase::alignToWidth() {
 		
 		std::vector<tgui::String>cell_data;
 
-		if (db_data.size()) { //<#######
+		if (db_data.size()) { 
 			for (auto data : db_data) {
 				cell_data.emplace_back(data);
 				column_counter++;
@@ -63,70 +63,72 @@ void SQLiteDataBase::alignToWidth() {
 					maximum_string_length = data.size();
 				}
 				if (column_counter == current_number_of_columns) {
-					m_widgets.output_list_view->addItem(cell_data);
+					m_widgets->output_list_view->addItem(cell_data);
 					column_counter = 0;
 					cell_data.clear();
 				}
 			}
-		}	   //<#######
-		else { //<#######
-			m_widgets.output_list_view->removeAllItems(); //<#######
+		}	   
+		else { 
+			m_widgets->output_list_view->removeAllItems(); //<#######
 			std::string test = "SELECT name FROM PRAGMA_TABLE_INFO('" + m_table_name + "')";
 			dataBaseRequest(m_db_name, m_table_name, test);
 
 			for (int i = 0; i < test1.size(); ++i) {
-				m_widgets.output_list_view->addColumn(test1[i]);
-				m_widgets.output_list_view->setColumnAlignment(i, tgui::ListView::ColumnAlignment::Center);
+				m_widgets->output_list_view->addColumn(test1[i]);
+				m_widgets->output_list_view->setColumnAlignment(i, tgui::ListView::ColumnAlignment::Center);
 			}
 			test1.clear(); 
 			return;
 		}
 
-		for (int i = 0; i < m_widgets.output_list_view->getColumnCount(); ++i) {
+		for (int i = 0; i < m_widgets->output_list_view->getColumnCount(); ++i) {
 			if (maximum_string_length > maximum_column_string_lenght) {
-				m_widgets.output_list_view->setColumnWidth(i, STRING_MULTIPLIER * maximum_string_length);
+				m_widgets->output_list_view->setColumnWidth(i, STRING_MULTIPLIER * maximum_string_length);
 			}
 			else {
-				m_widgets.output_list_view->setColumnWidth(i, STRING_MULTIPLIER * maximum_column_string_lenght);
+				m_widgets->output_list_view->setColumnWidth(i, STRING_MULTIPLIER * maximum_column_string_lenght);
 			}
 		}
 }
 
 void SQLiteDataBase::deleteFromDataBase() {
 
-	std::string request = "DELETE FROM " + m_table_name + " WHERE ";
-	std::set<std::size_t>selected_item = m_widgets.output_list_view->getSelectedItemIndices();
-	for (std::set<std::size_t>::iterator it = selected_item.begin(); it != selected_item.end(); ++it) {
-		if ((*it) != -1) {
-			for (int i = 0; i < m_widgets.output_list_view->getItemRow((*it)).size(); ++i) {
+	if (m_widgets->output_list_view->getItemCount() != 0) {
+		std::string request = "DELETE FROM " + m_table_name + " WHERE ";
+		std::set<std::size_t>selected_item = m_widgets->output_list_view->getSelectedItemIndices();
+		for (std::set<std::size_t>::iterator it = selected_item.begin(); it != selected_item.end(); ++it) {
+			if ((*it) != -1) {
+				for (int i = 0; i < m_widgets->output_list_view->getItemRow((*it)).size(); ++i) {
 
-				std::string column = m_widgets.output_list_view->getColumnText(i).toStdString();
-				std::string row = m_widgets.output_list_view->getItemRow((*it))[i].toStdString();
+					std::string column = m_widgets->output_list_view->getColumnText(i).toStdString();
+					std::string row = m_widgets->output_list_view->getItemRow((*it))[i].toStdString();
 
-				request += column;
-				request += " =";
-				request += " '" + row + "' ";
-				if (i == m_widgets.output_list_view->getItemRow((*it)).size() - 1) {
-					break;
+					request += column;
+					request += " =";
+					request += " '" + row + "' ";
+					if (i == m_widgets->output_list_view->getItemRow((*it)).size() - 1) {
+						break;
+					}
+
+					request += " AND ";
 				}
-
-				request += " AND ";
 			}
 		}
-	}
 
-	dataBaseRequest(m_db_name, m_table_name, request); 
-	std::string redraw_output_window = "SELECT * FROM " + m_table_name;
-	dataBaseRequest(m_db_name, m_table_name, redraw_output_window);
+		dataBaseRequest(m_db_name, m_table_name, request);
+		std::string redraw_output_window = "SELECT * FROM " + m_table_name;
+		dataBaseRequest(m_db_name, m_table_name, redraw_output_window);
+	}
 }
 
 void SQLiteDataBase::insertIntoToDataBase() {
 
 	std::string request = "INSERT INTO " + m_table_name + "(";
 
-	for (int i = 0; i < m_widgets.output_list_view->getColumnCount(); ++i) {
-		request += m_widgets.output_list_view->getColumnText(i).toStdString();
-		if (i != m_widgets.output_list_view->getColumnCount() - 1) {
+	for (int i = 0; i < m_widgets->output_list_view->getColumnCount(); ++i) {
+		request += m_widgets->output_list_view->getColumnText(i).toStdString();
+		if (i != m_widgets->output_list_view->getColumnCount() - 1) {
 			request += ",";
 		}
 	}
@@ -147,7 +149,7 @@ void SQLiteDataBase::insertIntoToDataBase() {
 	std::string redraw_output_window = "SELECT * FROM " + m_db_name;
 	dataBaseRequest(m_db_name, m_table_name, redraw_output_window);
 	m_dialog_ptr->getWindowPtr()->close();
-	m_widgets.accept_button->setEnabled(false);
+	m_widgets->accept_button->setEnabled(false);
 }
 
 
@@ -156,8 +158,8 @@ void SQLiteDataBase::insertIntoToDataBase() {
 int SQLiteDataBase::readDepartmentDataBase(void* notUsed, int argc, char** argv, char** columnName) {
 
 	auto db_ptr = static_cast<SQLiteDataBase*>(notUsed);       
-	db_ptr->m_widgets.output_list_view->removeAllItems();    
-	db_ptr->m_widgets.output_list_view->removeAllColumns();   
+	db_ptr->m_widgets->output_list_view->removeAllItems();    
+	db_ptr->m_widgets->output_list_view->removeAllColumns();   
 
 	for (int i = 0; i < argc; ++i) { 
 		std::string current_column = columnName[i];
@@ -165,8 +167,8 @@ int SQLiteDataBase::readDepartmentDataBase(void* notUsed, int argc, char** argv,
 			db_ptr->test1.emplace_back(argv[i]);
 		}
 		else {
-			db_ptr->m_widgets.output_list_view->addColumn(columnName[i]);
-			db_ptr->m_widgets.output_list_view->setColumnAlignment(i, tgui::ListView::ColumnAlignment::Center);
+			db_ptr->m_widgets->output_list_view->addColumn(columnName[i]);
+			db_ptr->m_widgets->output_list_view->setColumnAlignment(i, tgui::ListView::ColumnAlignment::Center);
 		}                                   																   
 		db_ptr->db_data.emplace_back(argv[i]);                        
 	}

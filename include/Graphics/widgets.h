@@ -20,6 +20,7 @@ public:
 	tgui::Button::Ptr exit_button;
 	tgui::Button::Ptr add_button;
 	tgui::Button::Ptr remove_button;
-	tgui::ListView::Ptr output_list_view;
+	tgui::ListView::Ptr output_list_view;	
+	
 	Widgets();
 };
