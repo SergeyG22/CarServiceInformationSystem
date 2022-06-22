@@ -191,7 +191,7 @@ PkController::PkController(std::shared_ptr<SQLiteDataBase>& data_base, tgui::Gui
 
 	m_widgets->exit_button->onPress([&] {
 		m_window_ptr->getWindowPtr()->close();
-
+		m_dialog_ptr->getWindowPtr()->close();
 		});
 	
 }
@@ -205,6 +205,7 @@ void PkController::eventLoop() {
 
 		if (event.type == sf::Event::Closed) {
 			m_window_ptr->getWindowPtr()->close();
+			m_dialog_ptr->getWindowPtr()->close();
 		}
 
 		m_gui.handleEvent(event);

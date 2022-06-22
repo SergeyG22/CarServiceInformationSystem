@@ -13,7 +13,7 @@ class SQLiteDataBase {
 	std::string m_table_name;
 	tgui::Gui& m_dialog_gui;
 	std::shared_ptr<Display>& m_dialog_ptr;
-	std::vector<tgui::String>test1;
+	std::vector<tgui::String>m_columns_empty_table;
 public:
 	SQLiteDataBase(std::shared_ptr<Widgets>&, tgui::Gui&, std::shared_ptr<Display>&);
 	std::vector<tgui::String>db_data;

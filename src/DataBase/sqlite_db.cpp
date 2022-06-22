@@ -74,11 +74,11 @@ void SQLiteDataBase::alignToWidth() {
 			std::string test = "SELECT name FROM PRAGMA_TABLE_INFO('" + m_table_name + "')";
 			dataBaseRequest(m_db_name, m_table_name, test);
 
-			for (int i = 0; i < test1.size(); ++i) {
-				m_widgets->output_list_view->addColumn(test1[i]);
+			for (int i = 0; i < m_columns_empty_table.size(); ++i) {
+				m_widgets->output_list_view->addColumn(m_columns_empty_table[i]);
 				m_widgets->output_list_view->setColumnAlignment(i, tgui::ListView::ColumnAlignment::Center);
 			}
-			test1.clear(); 
+			m_columns_empty_table.clear(); 
 			return;
 		}
 
@@ -164,7 +164,7 @@ int SQLiteDataBase::readDepartmentDataBase(void* notUsed, int argc, char** argv,
 	for (int i = 0; i < argc; ++i) { 
 		std::string current_column = columnName[i];
 		if (current_column == "name") {
-			db_ptr->test1.emplace_back(argv[i]);
+			db_ptr->m_columns_empty_table.emplace_back(argv[i]);
 		}
 		else {
 			db_ptr->m_widgets->output_list_view->addColumn(columnName[i]);
