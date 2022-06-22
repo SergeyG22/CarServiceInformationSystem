@@ -70,3 +70,6 @@ cmake --build build --config Release
 After that, an executable file will appear in 'build' the directory
 
 **To work successfully, the "resource" folder must be located on the directory above that of the executable file**<br><br>
+
+### Preview
+![alt text](https://github.com/SergeyG22/CarServiceInformationSystem/blob/main/resources/animations/animation.gif)
